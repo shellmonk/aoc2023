@@ -1,7 +1,7 @@
 fn main() {
     let input = include_str!("./input1.txt");
     let output = process(input);
-    println!("Day 02: Part 01 output: {output}\n");
+    println!("Day 02: Part 02 output: {output}\n");
 }
 
 #[derive(Debug)]
