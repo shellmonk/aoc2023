@@ -5,7 +5,7 @@ fn main() {
 }
 
 struct Game {
-    
+
 }
 
 fn process(input: &str) -> String {
