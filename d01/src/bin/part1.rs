@@ -6,33 +6,20 @@ fn main() {
 
 fn process(input: &str) -> String {
     let mut sum = 0;
-    for line in input.split_whitespace() {
 
+    for line in input.split_whitespace() {
         let digits = line.chars()
             .filter(|c| c.is_ascii_digit())
             .map(|c| c.to_digit(10).unwrap())
             .collect::<Vec<_>>();
+
         let dig1 = digits.iter().nth(0).unwrap();
         let dig2 = digits.iter().last().unwrap();
-        //
-        // let mut first_set = false;
-        // let mut dig1 = '0';
-        // let mut dig2 = '0';
-        // for c in line.chars() {
-        //     if c.is_digit(10) {
-        //         if first_set {
-        //             dig2 = c;
-        //         } else {
-        //             dig1 = c;
-        //             dig2 = c;
-        //             first_set = true;
-        //         }
-        //     }
-        // }
+
         sum += dig1 * 10 + dig2;
     }
 
-    format!("{}", sum)
+    format!("{sum}")
 }
 
 #[cfg(test)]
