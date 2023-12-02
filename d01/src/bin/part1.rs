@@ -5,26 +5,33 @@ fn main() {
 }
 
 fn process(input: &str) -> String {
-    let mut numbers: Vec<i32> = Vec::new();
+    let mut sum = 0;
     for line in input.split_whitespace() {
-        let mut first_set = false;
-        let mut dig1 = '0';
-        let mut dig2 = '0';
-        for char in line.chars() {
-            if char.is_digit(10) {
-                if first_set {
-                    dig2 = char;
-                } else {
-                    dig1 = char;
-                    dig2 = char;
-                    first_set = true;
-                }
-            }
-        }
-        numbers.push(format!("{}{}", dig1, dig2).parse::<i32>().unwrap());
+
+        let digits = line.chars()
+            .filter(|c| c.is_ascii_digit())
+            .map(|c| c.to_digit(10).unwrap())
+            .collect::<Vec<_>>();
+        let dig1 = digits.iter().nth(0).unwrap();
+        let dig2 = digits.iter().last().unwrap();
+        //
+        // let mut first_set = false;
+        // let mut dig1 = '0';
+        // let mut dig2 = '0';
+        // for c in line.chars() {
+        //     if c.is_digit(10) {
+        //         if first_set {
+        //             dig2 = c;
+        //         } else {
+        //             dig1 = c;
+        //             dig2 = c;
+        //             first_set = true;
+        //         }
+        //     }
+        // }
+        sum += dig1 * 10 + dig2;
     }
 
-    let sum: i32 = numbers.iter().sum();
     format!("{}", sum)
 }
 
