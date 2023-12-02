@@ -4,12 +4,82 @@ fn main() {
     println!("Day 02: Part 01 output: {output}\n");
 }
 
+#[derive(Debug)]
 struct Game {
+    index: u32,
+    records: Vec<GameRecord>
+}
 
+#[derive(Debug)]
+struct GameRecord {
+    red: u8,
+    green: u8,
+    blue: u8
+}
+
+impl Game {
+    fn from(input: &str) -> Self {
+        Game {
+            index: input.split(':')
+                .nth(0).unwrap()
+                .split_whitespace().last().unwrap()
+                .parse().unwrap(),
+
+            records: input.split(':')
+                .last().unwrap()
+                .split(';')
+                .map(|r|
+                    GameRecord {
+                        red: match r.contains("red") {
+                            true => {
+                                r.split(',').filter(|x| x.contains("red")).last().unwrap().split_whitespace().nth(0).unwrap().parse().unwrap()
+                            },
+                            false => 0
+                        },
+                        green: match r.contains("green") {
+                            true => {
+                                r.split(',').filter(|x| x.contains("green")).last().unwrap().split_whitespace().nth(0).unwrap().parse().unwrap()
+                            },
+                            false => 0
+                        },
+                        blue: match r.contains("blue") {
+                            true => {
+                                r.split(',').filter(|x| x.contains("blue")).last().unwrap().split_whitespace().nth(0).unwrap().parse().unwrap()
+                            },
+                            false => 0
+                        },
+                    })
+                .collect()
+        }
+    }
+
+    fn max_reds(&self) -> u8 {
+        self.records.iter().max_by_key(|r| r.red).unwrap().red
+    }
+
+    fn max_greens(&self) -> u8 {
+        self.records.iter().max_by_key(|r| r.green).unwrap().green
+    }
+
+    fn max_blues(&self) -> u8 {
+        self.records.iter().max_by_key(|r| r.blue).unwrap().blue
+    }
 }
 
 fn process(input: &str) -> String {
-    "".to_string()
+    let mut sum = 0;
+    let reds = 12;
+    let greens = 13;
+    let blues = 14;
+
+    for line in input.lines() {
+        let game = Game::from(line);
+        if game.max_reds() <= reds && game.max_greens() <= greens && game.max_blues() <= blues {
+            sum += game.index;
+        }
+    }
+
+    format!("{sum}")
 }
 
 #[cfg(test)]
