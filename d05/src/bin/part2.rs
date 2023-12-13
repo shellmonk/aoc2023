@@ -1,8 +1,21 @@
 use std::collections::HashMap;
+use std::cmp::min;
+
+#[derive(Debug)]
+struct Seed {
+    start: u64,
+    range: u64,
+}
+
+impl Seed {
+    fn from(start: u64, range: u64) -> Self {
+        Self { start, range }
+    }
+}
 
 #[derive(Debug)]
 struct Almanac {
-    pub seeds: Vec<u64>,
+    pub seeds: Vec<Seed>,
     pub ranges: HashMap<Relation, Vec<Record>>,
 }
 
@@ -32,14 +45,25 @@ impl Almanac {
         almanac
     }
 
-    fn parse_seeds(line: &str) -> Vec<u64> {
-        line.split(':')
+    fn parse_seeds(line: &str) -> Vec<Seed> {
+        let mut seeds = Vec::new();
+
+        let nums: Vec<u64> = line
+            .split(':')
             .last()
             .unwrap()
             .trim()
             .split_whitespace()
             .map(|n| n.parse::<u64>().unwrap())
-            .collect()
+            .collect();
+
+        for num in 0..nums.len() {
+            if num % 2 == 0 {
+                seeds.push(Seed::from(nums[num], nums[num + 1]))
+            }
+        }
+
+        seeds
     }
 
     fn _get_relation_by_src_dst(&self, src: String, dst: String) -> &Relation {
@@ -49,10 +73,8 @@ impl Almanac {
             .0
     }
 
-    fn find(&self, path: &Vec<String>, start_val: u64) -> u64 {
+    fn find_min(&self, path: &Vec<String>, seed: &Seed) -> u64 {
         let mut path_iter = path.iter().peekable();
-        let mut curr_val = start_val;
-
         let mut rel_path: Vec<&Relation> = Vec::new();
 
         while let Some(point) = path_iter.next() {
@@ -69,20 +91,54 @@ impl Almanac {
             }
         }
 
-        for r in rel_path {
-            let records = self.ranges.get(r).unwrap();
+        println!("{:?}", self.find_breaks((1, 1000), rel_path[0]));
 
-            for record in records {
-                if curr_val >= record.src && curr_val <= record.src + record.range {
-                    println!("found curr_val: {curr_val} in Record: {:?}", record);
-                    curr_val = record.dst + (curr_val - record.src);
-                    println!("new curr_val: {curr_val}");
-                    break;
+        //let mut candidates = Vec::new();
+
+        // for rel in rel_path {
+        //     let r = self.get_ranges(0, 10000, rel);
+        //     println!("{:?}", r);
+        // }
+
+        0
+    }
+
+    fn find_breaks(&self, segment: (u64, u64), relation: &Relation) -> Vec<(u64, u64)> {
+
+        let find_dest_from_src = |src: u64, rec: &Record| -> u64 {
+            rec.dst + (src - rec.src)
+        };
+
+        let calc_segments_for_record = |segment: (u64, u64), rec: &Record| -> Vec<(u64, u64)> {
+            let mut tmp: Vec<(u64, u64)> = Vec::new();
+            let seg_start = segment.0;
+            let seg_end = segment.0 + segment.1;
+
+            let rec_start = rec.src;
+            let rec_end = rec.src + rec.range;
+
+            if seg_start >= rec_start {
+                if seg_end >= rec_end {
+                    // TODO: WTF
+                    tmp.push((find_dest_from_src(min(seg_end, rec_end), rec), rec.range));
+                } else {
+                    tmp.push((find_dest_from_src(seg_start, rec), segment.1));
                 }
-            }
-        }
+            } else {
 
-        curr_val
+            }
+
+            tmp
+        };
+
+        self.ranges
+            .get(relation)
+            .unwrap()
+            .iter()
+            .filter(|rec|
+                !(rec.src > segment.0 + segment.1 || rec.src + rec.range < segment.0))
+            .flat_map(|rec| calc_segments_for_record(segment, rec))
+            .collect::<Vec<(u64, u64)>>()
     }
 }
 
@@ -158,7 +214,6 @@ fn main() {
 }
 
 fn process(input: &str) -> String {
-    let mut solutions: Vec<u64> = Vec::new();
     let almanac = Almanac::from_input(input);
 
     let path = vec![
@@ -172,15 +227,17 @@ fn process(input: &str) -> String {
         "location".to_string(),
     ];
 
+    let mut min = u64::MAX;
+
     for seed in &almanac.seeds {
-        let s = almanac.find(&path, *seed);
-        println!("seed: {}, {}", seed, s);
-        solutions.push(s);
+        let val = almanac.find_min(&path, seed);
+        println!("min for seed {:?} is {val}", seed);
+        if val < min {
+            min = val
+        }
     }
 
-    let v = solutions.iter().min().unwrap();
-
-    format!("{v}")
+    format!("{min}")
 }
 
 #[cfg(test)]
@@ -224,6 +281,6 @@ mod tests {
             60 56 37\n
             56 93 4",
         );
-        assert_eq!(result, "35");
+        assert_eq!(result, "46");
     }
 }
