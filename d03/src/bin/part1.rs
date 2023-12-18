@@ -1,5 +1,3 @@
-
-
 const ROW: usize = 140;
 const COL: usize = 140;
 
@@ -10,7 +8,6 @@ fn main() {
 }
 
 fn symbol_in_neighbors(matrix: &[[char; ROW]; COL], cursor_row: usize, cursor_col: usize) -> bool {
-
     let rows = matrix.len();
     let cols = matrix[0].len();
 
@@ -19,50 +16,118 @@ fn symbol_in_neighbors(matrix: &[[char; ROW]; COL], cursor_row: usize, cursor_co
     let cursor = matrix[cursor_row][cursor_col];
 
     // left
-    if cursor_col > 0 && !matrix[cursor_row][cursor_col - 1].is_ascii_digit() && !matrix[cursor_row][cursor_col - 1].is_whitespace() && matrix[cursor_row][cursor_col - 1] != '.' {
-        println!("cursor {} left -> {}", cursor, matrix[cursor_row][cursor_col - 1]);
+    if cursor_col > 0
+        && !matrix[cursor_row][cursor_col - 1].is_ascii_digit()
+        && !matrix[cursor_row][cursor_col - 1].is_whitespace()
+        && matrix[cursor_row][cursor_col - 1] != '.'
+    {
+        println!(
+            "cursor {} left -> {}",
+            cursor,
+            matrix[cursor_row][cursor_col - 1]
+        );
         return true;
     }
 
     // up left
-    if cursor_col > 0 && cursor_row > 0 && !matrix[cursor_row - 1][cursor_col - 1].is_ascii_digit() && !matrix[cursor_row - 1][cursor_col - 1].is_whitespace() && matrix[cursor_row - 1][cursor_col - 1] != '.' {
-        println!("cursor {} up left -> {}", cursor, matrix[cursor_row - 1][cursor_col - 1]);
+    if cursor_col > 0
+        && cursor_row > 0
+        && !matrix[cursor_row - 1][cursor_col - 1].is_ascii_digit()
+        && !matrix[cursor_row - 1][cursor_col - 1].is_whitespace()
+        && matrix[cursor_row - 1][cursor_col - 1] != '.'
+    {
+        println!(
+            "cursor {} up left -> {}",
+            cursor,
+            matrix[cursor_row - 1][cursor_col - 1]
+        );
         return true;
     }
 
     // up
-    if cursor_row > 0 && !matrix[cursor_row - 1][cursor_col].is_ascii_digit() && !matrix[cursor_row - 1][cursor_col].is_whitespace() && matrix[cursor_row - 1][cursor_col] != '.' {
-        println!("cursor {} up -> {}", cursor, matrix[cursor_row - 1][cursor_col]);
+    if cursor_row > 0
+        && !matrix[cursor_row - 1][cursor_col].is_ascii_digit()
+        && !matrix[cursor_row - 1][cursor_col].is_whitespace()
+        && matrix[cursor_row - 1][cursor_col] != '.'
+    {
+        println!(
+            "cursor {} up -> {}",
+            cursor,
+            matrix[cursor_row - 1][cursor_col]
+        );
         return true;
     }
 
     // up right
-    if cursor_row > 0 && cursor_col + 1 < cols && !matrix[cursor_row - 1][cursor_col + 1].is_ascii_digit() && !matrix[cursor_row - 1][cursor_col + 1].is_whitespace() && matrix[cursor_row - 1][cursor_col + 1] != '.' {
-        println!("cursor {} up right -> {}", cursor, matrix[cursor_row - 1][cursor_col + 1]);
+    if cursor_row > 0
+        && cursor_col + 1 < cols
+        && !matrix[cursor_row - 1][cursor_col + 1].is_ascii_digit()
+        && !matrix[cursor_row - 1][cursor_col + 1].is_whitespace()
+        && matrix[cursor_row - 1][cursor_col + 1] != '.'
+    {
+        println!(
+            "cursor {} up right -> {}",
+            cursor,
+            matrix[cursor_row - 1][cursor_col + 1]
+        );
         return true;
     }
 
     // right
-    if cursor_col + 1 < cols && !matrix[cursor_row][cursor_col + 1].is_ascii_digit() && !matrix[cursor_row][cursor_col + 1].is_whitespace() && matrix[cursor_row][cursor_col + 1] != '.' {
-        println!("cursor {} right -> {}", cursor, matrix[cursor_row][cursor_col + 1]);
+    if cursor_col + 1 < cols
+        && !matrix[cursor_row][cursor_col + 1].is_ascii_digit()
+        && !matrix[cursor_row][cursor_col + 1].is_whitespace()
+        && matrix[cursor_row][cursor_col + 1] != '.'
+    {
+        println!(
+            "cursor {} right -> {}",
+            cursor,
+            matrix[cursor_row][cursor_col + 1]
+        );
         return true;
     }
 
     // down right
-    if cursor_row + 1 < rows && cursor_col + 1 < cols && !matrix[cursor_row + 1][cursor_col + 1].is_ascii_digit() && !matrix[cursor_row + 1][cursor_col + 1].is_whitespace() && matrix[cursor_row + 1][cursor_col + 1] != '.' {
-        println!("cursor {} down right -> {}", cursor, matrix[cursor_row + 1][cursor_col + 1]);
+    if cursor_row + 1 < rows
+        && cursor_col + 1 < cols
+        && !matrix[cursor_row + 1][cursor_col + 1].is_ascii_digit()
+        && !matrix[cursor_row + 1][cursor_col + 1].is_whitespace()
+        && matrix[cursor_row + 1][cursor_col + 1] != '.'
+    {
+        println!(
+            "cursor {} down right -> {}",
+            cursor,
+            matrix[cursor_row + 1][cursor_col + 1]
+        );
         return true;
     }
 
     // down
-    if cursor_row + 1 < rows && !matrix[cursor_row + 1][cursor_col].is_ascii_digit() && !matrix[cursor_row + 1][cursor_col].is_whitespace() && matrix[cursor_row + 1][cursor_col] != '.' {
-        println!("cursor {} down -> {}", cursor, matrix[cursor_row + 1][cursor_col]);
+    if cursor_row + 1 < rows
+        && !matrix[cursor_row + 1][cursor_col].is_ascii_digit()
+        && !matrix[cursor_row + 1][cursor_col].is_whitespace()
+        && matrix[cursor_row + 1][cursor_col] != '.'
+    {
+        println!(
+            "cursor {} down -> {}",
+            cursor,
+            matrix[cursor_row + 1][cursor_col]
+        );
         return true;
     }
 
     // down left
-    if cursor_row + 1 < rows && cursor_col > 0 && !matrix[cursor_row + 1][cursor_col - 1].is_ascii_digit() && !matrix[cursor_row + 1][cursor_col - 1].is_whitespace() && matrix[cursor_row + 1][cursor_col - 1] != '.' {
-        println!("cursor {} down left -> {}", cursor, matrix[cursor_row + 1][cursor_col - 1]);
+    if cursor_row + 1 < rows
+        && cursor_col > 0
+        && !matrix[cursor_row + 1][cursor_col - 1].is_ascii_digit()
+        && !matrix[cursor_row + 1][cursor_col - 1].is_whitespace()
+        && matrix[cursor_row + 1][cursor_col - 1] != '.'
+    {
+        println!(
+            "cursor {} down left -> {}",
+            cursor,
+            matrix[cursor_row + 1][cursor_col - 1]
+        );
         return true;
     }
 
@@ -70,7 +135,6 @@ fn symbol_in_neighbors(matrix: &[[char; ROW]; COL], cursor_row: usize, cursor_co
 }
 
 fn process(input: &str) -> String {
-
     let mut sum = 0;
 
     let mut grid = [[' ' as char; ROW]; COL];
@@ -85,12 +149,11 @@ fn process(input: &str) -> String {
         let mut digits: Vec<u32> = Vec::new();
         let mut open = false;
         let mut num_dirty = false;
-        let mut num  = 0;
+        let mut num = 0;
 
         let clean_row = row.trim();
 
         for (j, cursor) in clean_row.chars().enumerate() {
-
             if cursor.is_ascii_digit() {
                 if !open {
                     open = true;
@@ -106,21 +169,25 @@ fn process(input: &str) -> String {
                         num += digit * 10_u32.pow(deg as u32);
                     }
 
-                    println!("position: x {} ; y {} | {} | dirty: {} | sum: {}\n", i, j, num, num_dirty, sum);
+                    println!(
+                        "position: x {} ; y {} | {} | dirty: {} | sum: {}\n",
+                        i, j, num, num_dirty, sum
+                    );
 
                     if num_dirty {
                         sum += num;
                     }
                 }
-
             } else {
                 if open {
-
                     for (deg, digit) in digits.iter().rev().enumerate() {
                         num += digit * 10_u32.pow(deg as u32);
                     }
 
-                    println!("position: x {} ; y {} | {} | dirty: {} | sum: {}\n", i, j, num, num_dirty, sum);
+                    println!(
+                        "position: x {} ; y {} | {} | dirty: {} | sum: {}\n",
+                        i, j, num, num_dirty, sum
+                    );
 
                     if num_dirty {
                         sum += num;
@@ -133,8 +200,6 @@ fn process(input: &str) -> String {
                 }
             }
         }
-
-
     }
 
     format!("{sum}")
@@ -156,7 +221,8 @@ mod tests {
             ..592.....\n \
             ......755.\n \
             ...$.*....\n \
-            .664.598..");
+            .664.598..",
+        );
         assert_eq!(result, "4361");
     }
 
@@ -174,7 +240,8 @@ mod tests {
             ............\n \
             2.2......12.\n \
             .*.........*\n \
-            1.1.......56");
+            1.1.......56",
+        );
         assert_eq!(result, "413");
     }
 }

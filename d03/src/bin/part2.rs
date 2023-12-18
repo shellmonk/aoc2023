@@ -6,9 +6,7 @@ fn main() {
     println!("Day 03: Part 02 output: {output}\n");
 }
 
-
 fn process(input: &str) -> String {
-
     let mut sum = 0;
 
     let mut grid: Vec<Vec<char>> = Vec::new();
@@ -34,7 +32,6 @@ fn process(input: &str) -> String {
     let extract_number = |row: usize, col: usize| -> u32 {
         let mut start = col;
         let mut sum = 0;
-        let mut cursor = 0;
 
         while start != 0 && grid[row][start - 1].is_ascii_digit() {
             start -= 1;
@@ -45,7 +42,6 @@ fn process(input: &str) -> String {
         while start < grid[row].len() && grid[row][start].is_ascii_digit() {
             let digit = grid[row][start].to_digit(10).unwrap();
             digits.push(digit);
-            cursor += 1;
             start += 1;
         }
 
@@ -56,21 +52,34 @@ fn process(input: &str) -> String {
         sum
     };
 
-
-
     for (gear_row, gear_col) in gears {
         let mut set = HashSet::new();
-        if grid[gear_row + 1][gear_col].is_ascii_digit() { set.insert(extract_number(gear_row + 1, gear_col)); };
-        if grid[gear_row + 1][gear_col + 1].is_ascii_digit() { set.insert(extract_number(gear_row + 1, gear_col + 1)); };
-        if grid[gear_row + 1][gear_col - 1].is_ascii_digit() { set.insert(extract_number(gear_row + 1, gear_col - 1)); };
-        if grid[gear_row][gear_col + 1].is_ascii_digit() { set.insert(extract_number(gear_row, gear_col + 1)); };
-        if grid[gear_row][gear_col - 1].is_ascii_digit() { set.insert(extract_number(gear_row, gear_col - 1)); };
-        if grid[gear_row - 1][gear_col].is_ascii_digit() { set.insert(extract_number(gear_row - 1, gear_col)); };
-        if grid[gear_row - 1][gear_col + 1].is_ascii_digit() { set.insert(extract_number(gear_row - 1, gear_col + 1)); };
-        if grid[gear_row - 1][gear_col - 1].is_ascii_digit() { set.insert(extract_number(gear_row - 1, gear_col - 1)); };
+        if grid[gear_row + 1][gear_col].is_ascii_digit() {
+            set.insert(extract_number(gear_row + 1, gear_col));
+        };
+        if grid[gear_row + 1][gear_col + 1].is_ascii_digit() {
+            set.insert(extract_number(gear_row + 1, gear_col + 1));
+        };
+        if grid[gear_row + 1][gear_col - 1].is_ascii_digit() {
+            set.insert(extract_number(gear_row + 1, gear_col - 1));
+        };
+        if grid[gear_row][gear_col + 1].is_ascii_digit() {
+            set.insert(extract_number(gear_row, gear_col + 1));
+        };
+        if grid[gear_row][gear_col - 1].is_ascii_digit() {
+            set.insert(extract_number(gear_row, gear_col - 1));
+        };
+        if grid[gear_row - 1][gear_col].is_ascii_digit() {
+            set.insert(extract_number(gear_row - 1, gear_col));
+        };
+        if grid[gear_row - 1][gear_col + 1].is_ascii_digit() {
+            set.insert(extract_number(gear_row - 1, gear_col + 1));
+        };
+        if grid[gear_row - 1][gear_col - 1].is_ascii_digit() {
+            set.insert(extract_number(gear_row - 1, gear_col - 1));
+        };
 
-        if set.len() > 1 {
-            println!("found {:?} at {gear_row}, {gear_col}", set);
+        if set.len() == 2 {
             let mut tmp_sum = 1;
             for elem in set {
                 tmp_sum *= elem;
@@ -99,7 +108,8 @@ mod tests {
             ..592.....\n\
             ......755.\n\
             ...$.*....\n\
-            .664.598..");
+            .664.598..",
+        );
         assert_eq!(result, "467835");
     }
 }
